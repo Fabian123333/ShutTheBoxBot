@@ -26,7 +26,7 @@ def join(update, context):
 	if chat_id not in chat_data:
 		chat_data[chat_id] = initialize_game_state()
 	
-	if chat_data[chat_id]['players'] and chat_data[chat_id]['board'] != list(range(1, 13)):
+	if chat_data[chat_id]['players'] and chat_data[chat_id]['board'] != initialize_game_state["board"]:
 		context.bot.send_message(chat_id, f"The game has already started, @{user.username}. Please wait until it's over to join a new game.")
 		return
 	
@@ -145,10 +145,9 @@ def button(update, context):
 		game_state["selected_numbers"].clear()
 		# Überprüfen, ob das Spiel gewonnen wurde
 		if not game_state["board"]:
-			context.bot.send_message(player_id, text=f"Congratulations, {user.first_name}! You have 'Shut the Box' and won!")
+			context.bot.send_message(chat_id, text=f"Congratulations, {user.first_name}! You have 'Shut the Box' and won!")
 			chat_data.pop(chat_id, None)
 			return
-		context.bot.send_message(chat_id, text=f"{user.first_name} hat eine gültige Auswahl getroffen.")
 		play_game(update, context)
 	else:
 		game_state["selected_numbers"].clear()
